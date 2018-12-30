@@ -1,8 +1,14 @@
 import React from "react";
+import EventDashboard from "../../features/event/EventDashboard/EventDashboard.jsx";
 
 class App extends React.Component {
   render() {
-    return <h1>Re-vents</h1>;
+    return (
+      <div>
+        <h2>Re-vents</h2>
+        <EventDashboard />
+      </div>
+    );
   }
 }
 
