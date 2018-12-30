@@ -1,7 +1,9 @@
-import React from "react"
-import { Grid, Button } from "semantic-ui-react"
-import EventList from "../EventList/EventList.jsx"
-import EventForm from "../EventForm/EventForm.jsx"
+import React from "react";
+import { Grid, Button } from "semantic-ui-react";
+import EventList from "../EventList/EventList.jsx";
+import EventForm from "../EventForm/EventForm.jsx";
+
+import cuid from "cuid";
 
 const eventsDashoard = [
   {
@@ -52,23 +54,30 @@ const eventsDashoard = [
       }
     ]
   }
-]
+];
 
 class EventDashboard extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       events: eventsDashoard,
       isOpen: false
-    }
+    };
   }
 
   handleFormOpen = () => {
-    this.setState({ isOpen: true })
-  }
+    this.setState({ isOpen: true });
+  };
   handleCancel = () => {
-    this.setState({ isOpen: false })
-  }
+    this.setState({ isOpen: false });
+  };
+
+  handleCreateEvent = newEvent => {
+    newEvent.id = cuid();
+    newEvent.hostPhotoURL = "/assets/user.png";
+    const updatedEvents = [...this.state.events, newEvent];
+    this.setState({ events: updatedEvents, isOpen: false });
+  };
   render() {
     return (
       <Grid>
@@ -81,11 +90,16 @@ class EventDashboard extends React.Component {
             positive
             content="Create Event"
           />
-          {this.state.isOpen && <EventForm handleCancel={this.handleCancel} />}
+          {this.state.isOpen && (
+            <EventForm
+              createEvent={this.handleCreateEvent}
+              handleCancel={this.handleCancel}
+            />
+          )}
         </Grid.Column>
       </Grid>
-    )
+    );
   }
 }
 
-export default EventDashboard
+export default EventDashboard;
