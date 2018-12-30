@@ -1,8 +1,9 @@
-import React from "react";
-import { Segment, Form, Button } from "semantic-ui-react";
+import React from "react"
+import { Segment, Form, Button } from "semantic-ui-react"
 
 class EventForm extends React.Component {
   render() {
+    const { handleCancel } = this.props
     return (
       <Segment>
         <Form>
@@ -29,11 +30,13 @@ class EventForm extends React.Component {
           <Button positive type="submit">
             Submit
           </Button>
-          <Button type="button">Cancel</Button>
+          <Button type="button" onClick={handleCancel}>
+            Cancel
+          </Button>
         </Form>
       </Segment>
-    );
+    )
   }
 }
 
-export default EventForm;
+export default EventForm
