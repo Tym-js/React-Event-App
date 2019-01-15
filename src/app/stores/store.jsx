@@ -1,7 +1,15 @@
-import { createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import rootReducer from "../reducers/rootReducer.jsx";
+import { createStore, applyMiddleware } from "redux"
+import { composeWithDevTools } from "redux-devtools-extension"
+import { reactReduxFirebase, getFirebase } from "react-redux-firebase"
+import { reduxFirestore, getFirestore } from "redux-firestore"
+import thunk from "redux-thunk"
+import rootReducer from "../reducers/rootReducer.jsx"
 
-const store = createStore(rootReducer, composeWithDevTools());
+const middlewares = [thunk]
+const middlewareEnhancer = applyMiddleware(...middlewares)
+const storeEnhancers = [middlewareEnhancer]
+const composedEnhancer = composeWithDevTools(...storeEnhancers)
 
-export default store;
+const store = createStore(rootReducer)
+
+export default store

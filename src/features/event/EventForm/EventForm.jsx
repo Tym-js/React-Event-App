@@ -1,36 +1,37 @@
-import React from "react";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
+import React from "react"
+import { connect } from "react-redux"
+import { reduxForm, Field } from "redux-form"
 import {
   composeValidators,
   combineValidators,
   isRequired,
   hasLengthGreaterThan
-} from "revalidate";
-import cuid from "cuid";
-import { createEvent, updateEvent } from "../eventActions.jsx";
-import { Segment, Form, Button, Grid, Header } from "semantic-ui-react";
-import TextInput from "../../../app/common/form/TextInput.jsx";
-import TextArea from "../../../app/common/form/TextArea.jsx";
-import SelectInput from "../../../app/common/form/SelectInput.jsx";
-import DateInput from "../../../app/common/form/DateInput.jsx";
+} from "revalidate"
+import cuid from "cuid"
+import { createEvent, updateEvent } from "../eventActions.jsx"
+import { Segment, Form, Button, Grid, Header } from "semantic-ui-react"
+import TextInput from "../../../app/common/form/TextInput.jsx"
+import TextArea from "../../../app/common/form/TextArea.jsx"
+import SelectInput from "../../../app/common/form/SelectInput.jsx"
+import DateInput from "../../../app/common/form/DateInput.jsx"
+import PlaceInput from "../../../app/common/form/PlaceInput.jsx"
 
 const mapStateToProps = (state, ownProps) => {
-  const eventId = ownProps.match.params.id;
-  let event = {};
+  const eventId = ownProps.match.params.id
+  let event = {}
 
   if (eventId && state.events.length > 0) {
-    event = state.events.filter(event => event.id === eventId)[0];
+    event = state.events.filter(event => event.id === eventId)[0]
   }
   return {
     initialValues: event
-  };
-};
+  }
+}
 
 const actions = {
   createEvent,
   updateEvent
-};
+}
 
 const category = [
   { key: "drinks", text: "Drinks", value: "drinks" },
@@ -39,7 +40,7 @@ const category = [
   { key: "food", text: "Food", value: "food" },
   { key: "music", text: "Music", value: "music" },
   { key: "travel", text: "Travel", value: "travel" }
-];
+]
 
 const validate = combineValidators({
   title: isRequired({ message: "The event title is Required" }),
@@ -52,28 +53,28 @@ const validate = combineValidators({
   )(),
   city: isRequired("city"),
   venue: isRequired("venue")
-});
+})
 
 class EventForm extends React.Component {
   onFormSubmit = value => {
-    console.log(value);
+    console.log(value)
     if (this.props.initialValues.id) {
-      this.props.updateEvent(value);
-      this.props.history.goBack();
+      this.props.updateEvent(value)
+      this.props.history.goBack()
     } else {
       const newEvent = {
         ...value,
         id: cuid(),
         hostPhotoURL: "/assets/user.png",
         hostedBy: "Bob"
-      };
-      this.props.createEvent(newEvent);
-      this.props.history.push("/events");
+      }
+      this.props.createEvent(newEvent)
+      this.props.history.push("/events")
     }
-  };
+  }
 
   render() {
-    const { invalid, pristine, submitting } = this.props;
+    const { invalid, pristine, submitting } = this.props
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -104,7 +105,8 @@ class EventForm extends React.Component {
               <Field
                 name="city"
                 type="text"
-                component={TextInput}
+                component={PlaceInput}
+                options={{ types: ["(cities)"] }}
                 placeholder="Event City"
               />
               <Field
@@ -136,7 +138,7 @@ class EventForm extends React.Component {
           </Segment>
         </Grid.Column>
       </Grid>
-    );
+    )
   }
 }
 
@@ -147,4 +149,4 @@ export default connect(
   reduxForm({ form: "eventForm", enableReinitialize: true, validate })(
     EventForm
   )
-);
+)
